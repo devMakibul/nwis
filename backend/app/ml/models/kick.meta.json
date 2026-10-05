@@ -1,0 +1,44 @@
+{
+  "name": "kick",
+  "key": "kick",
+  "version": "1.0",
+  "trained_at": "2026-10-02T06:20:07.606058",
+  "dataset_size": 8000,
+  "features": [
+    "formation_idx",
+    "trajectory_idx",
+    "depth",
+    "rop",
+    "wob",
+    "rpm",
+    "torque",
+    "ecd",
+    "mud_weight",
+    "standpipe_pressure",
+    "flow_rate",
+    "hookload",
+    "gas_units",
+    "pit_volume",
+    "rop_trend",
+    "torque_trend",
+    "ecd_margin",
+    "previous_events",
+    "depth_factor"
+  ],
+  "top_features": [
+    "gas_units",
+    "ecd_margin",
+    "ecd",
+    "formation_idx",
+    "pit_volume",
+    "rpm"
+  ],
+  "metrics": {
+    "accuracy": 0.7819,
+    "precision": 0.8159,
+    "recall": 0.9126,
+    "f1": 0.8616,
+    "roc_auc": 0.7992
+  },
+  "positive_rate": 0.7436
+}

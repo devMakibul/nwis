@@ -1,0 +1,65 @@
+services:
+  db:
+    image: timescale/timescaledb:latest-pg16
+    container_name: nwis_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-nwis}
+      POSTGRES_USER: ${POSTGRES_USER:-nwis_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-nwis_password}
+    ports:
+      - "5432:5432"
+    volumes:
+      - nwis_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-nwis_user} -d ${POSTGRES_DB:-nwis}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: nwis_backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-nwis_user}:${POSTGRES_PASSWORD:-nwis_password}@db:5432/${POSTGRES_DB:-nwis}
+      DATABASE_URL_SYNC: postgresql://${POSTGRES_USER:-nwis_user}:${POSTGRES_PASSWORD:-nwis_password}@db:5432/${POSTGRES_DB:-nwis}
+      SECRET_KEY: ${SECRET_KEY:-change_this_secret_key_in_production}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      OLLAMA_URL: ${OLLAMA_URL:-http://host.docker.internal:11434}
+      AI_PROVIDER: ${AI_PROVIDER:-openrouter}
+      MODEL_NAME: ${MODEL_NAME:-meta-llama/llama-3.1-8b-instruct:free}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173,http://localhost:3000}
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - nwis_storage:/app/storage
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: nwis_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:8000}
+      VITE_WS_URL: ${VITE_WS_URL:-ws://localhost:8000}
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+volumes:
+  nwis_pgdata:
+  nwis_storage:

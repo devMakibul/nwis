@@ -1,0 +1,44 @@
+{
+  "name": "formation_instability",
+  "key": "fi",
+  "version": "1.0",
+  "trained_at": "2026-10-02T06:20:07.901288",
+  "dataset_size": 8000,
+  "features": [
+    "formation_idx",
+    "trajectory_idx",
+    "depth",
+    "rop",
+    "wob",
+    "rpm",
+    "torque",
+    "ecd",
+    "mud_weight",
+    "standpipe_pressure",
+    "flow_rate",
+    "hookload",
+    "gas_units",
+    "pit_volume",
+    "rop_trend",
+    "torque_trend",
+    "ecd_margin",
+    "previous_events",
+    "depth_factor"
+  ],
+  "top_features": [
+    "formation_idx",
+    "depth_factor",
+    "depth",
+    "wob",
+    "rpm",
+    "mud_weight"
+  ],
+  "metrics": {
+    "accuracy": 0.6619,
+    "precision": 0.6955,
+    "recall": 0.7679,
+    "f1": 0.7299,
+    "roc_auc": 0.6899
+  },
+  "positive_rate": 0.5949
+}

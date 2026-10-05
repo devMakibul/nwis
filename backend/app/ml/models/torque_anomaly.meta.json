@@ -1,0 +1,44 @@
+{
+  "name": "torque_anomaly",
+  "key": "ta",
+  "version": "1.0",
+  "trained_at": "2026-10-02T06:20:07.753575",
+  "dataset_size": 8000,
+  "features": [
+    "formation_idx",
+    "trajectory_idx",
+    "depth",
+    "rop",
+    "wob",
+    "rpm",
+    "torque",
+    "ecd",
+    "mud_weight",
+    "standpipe_pressure",
+    "flow_rate",
+    "hookload",
+    "gas_units",
+    "pit_volume",
+    "rop_trend",
+    "torque_trend",
+    "ecd_margin",
+    "previous_events",
+    "depth_factor"
+  ],
+  "top_features": [
+    "torque",
+    "torque_trend",
+    "formation_idx",
+    "rop",
+    "depth",
+    "rpm"
+  ],
+  "metrics": {
+    "accuracy": 0.7113,
+    "precision": 0.7334,
+    "recall": 0.7691,
+    "f1": 0.7508,
+    "roc_auc": 0.7906
+  },
+  "positive_rate": 0.5657
+}
